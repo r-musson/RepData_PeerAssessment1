@@ -12,8 +12,23 @@ output: html_document
 
 ```{r,echo=TRUE}
 require(data.table,quietly=TRUE)
-#load the raw data
-rawActivityData <- read.csv("./repdata_data_activity/activity.csv",as.is=T)
+#load the raw data from the activity.zip folder
+#read from the zipped activity file
+#zipped folder name
+zipFolder <- "activity.zip"
+# Create a name for the temp dir 
+zipdir <- tempfile()
+dir.create(zipdir)
+
+# Unzip the file into the dir
+unzip(zipFolder, exdir=zipdir)
+# Get the files in the dir
+files <- list.files(zipdir)
+
+# Get the full name of the file
+file <- paste(zipdir, files[1], sep="/")
+# Read the file
+rawActivityData <- read.csv(file,as.is=T)
 
 #turn time intervals into a date and time
 timestamp <- strptime(paste(rawActivityData$date," ",
@@ -24,21 +39,44 @@ timestamp <- strptime(paste(rawActivityData$date," ",
 # sometimes easier to work with a date when summing data tables so have date
 tempdate <- as.Date(rawActivityData$date)
 
-activity.DT <- data.table(date=tempdate,timestamp=timestamp,
-                         steps=rawActivityData$steps)
+activity.df <- data.frame(date=as.Date(rawActivityData$date),timestamp=timestamp,
+                          steps=rawActivityData$steps)
+activityData <- data.table(activity.df)
 ```
 
+The preprocessed data has the following form:
+```{r,echo=TRUE}
+activityData
+```
+
+------
 
 ## What is mean total number of steps taken per day?
+```{r,echo=TRUE}
+totalStepsPerDay = activityData[,sum(steps),keyby="date"]
+setnames(totalStepsPerDay,"V1","totalSteps")
 
+hist(totalStepsPerDay$totalSteps,breaks=8,
+     main="Total Steps per Day",xlab="Steps")
 
+meanSteps <- mean(totalStepsPerDay$totalSteps,na.rm=T)
+
+medianSteps <- median(totalStepsPerDay$totalSteps,na.rm=T)
+
+```
+
+The mean number of steps per day is `r as.integer(meanSteps)`.
+
+The median number per day is `r as.integer(medianSteps)`.
+
+------
 
 ## What is the average daily activity pattern?
 
-
+------
 
 ## Imputing missing values
 
-
+------
 
 ## Are there differences in activity patterns between weekdays and weekends?
