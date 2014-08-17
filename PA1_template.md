@@ -174,6 +174,7 @@ The mean and median have not changed appreciably. This makes sense since mean wa
 ## Are there differences in activity patterns between weekdays and weekends?
 
 
+
 ```r
 require(lattice,quietly=TRUE)
 weekend <- c("Saturday","Sunday")
@@ -190,3 +191,8 @@ xyplot(steps ~ interval | weekPeriod, data = meanStepsPerInterval, layout = c(1,
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+
+ 
+Weekdays and weekends have very different patterns of activity. During the weekday, it appears that a large amount of walking occurs early, before 900. Could this be getting ready for work? It likely is not walking to work since there is no associated walk after work. The weekend has many more periods of greater than 50 steps. The low number of steps during the week as compared to the same period on the weekend may indicate a desk job.
+
+----------------
