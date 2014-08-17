@@ -100,6 +100,12 @@ plot(x=x,y=y,type = "l", col = 1,main="Average Daily Activity Pattern"
 
 ![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
 
+```r
+maxInterval <- x[which(y==max(y))]
+```
+
+The interval with the maximum mean number of steps is 835
+
 ------
 
 ## Imputing missing values

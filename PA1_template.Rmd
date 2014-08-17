@@ -74,7 +74,11 @@ x <- meanStepsPerInterval$interval
 y <- meanStepsPerInterval$meanSteps
 plot(x=x,y=y,type = "l", col = 1,main="Average Daily Activity Pattern"
      ,ylab="Mean Steps",xlab="Daily Interval")
+
+maxInterval <- x[which(y==max(y))]
 ```
+
+The interval with the maximum mean number of steps is `r maxInterval`
 
 ------
 
